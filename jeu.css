@@ -1,0 +1,27 @@
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background: #faf8ef;
+}
+
+#grid {
+  width: 400px;
+  height: 400px;
+  margin: 30px auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  background: #bbada0;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.cell {
+  background: #cdc1b4;
+  font-size: 40px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+}
