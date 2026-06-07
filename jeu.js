@@ -1,14 +1,28 @@
 const grid = document.getElementById("grid");
 const scoreDisplay = document.getElementById("score");
+const bestDisplay = document.getElementById("best");
+const restartButton = document.getElementById("restart");
 
-let board = [
-  [0, 0, 0, 0],
-  [0, 0, 0, 0],
-  [0, 0, 0, 0],
-  [0, 0, 0, 0]
-];
-
+let board;
 let score = 0;
+let bestScore = localStorage.getItem("bestScore") || 0;
+let hasWon = false;
+
+function startGame() {
+  board = [
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0]
+  ];
+
+  score = 0;
+  hasWon = false;
+
+  addTile();
+  addTile();
+  drawBoard();
+}
 
 function drawBoard() {
   grid.innerHTML = "";
@@ -18,10 +32,12 @@ function drawBoard() {
     cell.className = "cell";
     cell.textContent = value === 0 ? "" : value;
     cell.style.background = getColor(value);
+    cell.style.color = value <= 4 ? "#776e65" : "#f9f6f2";
     grid.appendChild(cell);
   });
 
   scoreDisplay.textContent = `Score : ${score}`;
+  bestDisplay.textContent = `Meilleur : ${bestScore}`;
 }
 
 function getColor(value) {
@@ -44,18 +60,20 @@ function getColor(value) {
 }
 
 function addTile() {
-  const empty = [];
+  const emptyCells = [];
 
   for (let r = 0; r < 4; r++) {
     for (let c = 0; c < 4; c++) {
-      if (board[r][c] === 0) empty.push({ r, c });
+      if (board[r][c] === 0) {
+        emptyCells.push({ r, c });
+      }
     }
   }
 
-  if (empty.length === 0) return;
+  if (emptyCells.length === 0) return;
 
-  const spot = empty[Math.floor(Math.random() * empty.length)];
-  board[spot.r][spot.c] = Math.random() < 0.9 ? 2 : 4;
+  const randomCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+  board[randomCell.r][randomCell.c] = Math.random() < 0.9 ? 2 : 4;
 }
 
 function slide(row) {
@@ -71,7 +89,9 @@ function slide(row) {
 
   row = row.filter(value => value !== 0);
 
-  while (row.length < 4) row.push(0);
+  while (row.length < 4) {
+    row.push(0);
+  }
 
   return row;
 }
@@ -84,13 +104,19 @@ function moveLeft() {
 
 function moveRight() {
   for (let r = 0; r < 4; r++) {
-    board[r] = slide(board[r].reverse()).reverse();
+    board[r] = slide([...board[r]].reverse()).reverse();
   }
 }
 
 function moveUp() {
   for (let c = 0; c < 4; c++) {
-    let column = [board[0][c], board[1][c], board[2][c], board[3][c]];
+    let column = [
+      board[0][c],
+      board[1][c],
+      board[2][c],
+      board[3][c]
+    ];
+
     column = slide(column);
 
     for (let r = 0; r < 4; r++) {
@@ -101,7 +127,13 @@ function moveUp() {
 
 function moveDown() {
   for (let c = 0; c < 4; c++) {
-    let column = [board[0][c], board[1][c], board[2][c], board[3][c]];
+    let column = [
+      board[0][c],
+      board[1][c],
+      board[2][c],
+      board[3][c]
+    ];
+
     column = slide(column.reverse()).reverse();
 
     for (let r = 0; r < 4; r++) {
@@ -114,21 +146,75 @@ function boardsAreEqual(a, b) {
   return JSON.stringify(a) === JSON.stringify(b);
 }
 
+function checkWin() {
+  if (hasWon) return false;
+
+  for (let row of board) {
+    if (row.includes(2048)) {
+      hasWon = true;
+      alert("🎉 Bravo ! Tu as gagné !");
+      return true;
+    }
+  }
+
+  return false;
+}
+
+function checkGameOver() {
+  for (let row of board) {
+    if (row.includes(0)) return false;
+  }
+
+  for (let r = 0; r < 4; r++) {
+    for (let c = 0; c < 3; c++) {
+      if (board[r][c] === board[r][c + 1]) return false;
+    }
+  }
+
+  for (let c = 0; c < 4; c++) {
+    for (let r = 0; r < 3; r++) {
+      if (board[r][c] === board[r + 1][c]) return false;
+    }
+  }
+
+  return true;
+}
+
+function updateBestScore() {
+  if (score > bestScore) {
+    bestScore = score;
+    localStorage.setItem("bestScore", bestScore);
+  }
+}
+
 document.addEventListener("keydown", event => {
   const oldBoard = JSON.parse(JSON.stringify(board));
 
-  if (event.key === "ArrowLeft") moveLeft();
-  else if (event.key === "ArrowRight") moveRight();
-  else if (event.key === "ArrowUp") moveUp();
-  else if (event.key === "ArrowDown") moveDown();
-  else return;
+  if (event.key === "ArrowLeft") {
+    moveLeft();
+  } else if (event.key === "ArrowRight") {
+    moveRight();
+  } else if (event.key === "ArrowUp") {
+    moveUp();
+  } else if (event.key === "ArrowDown") {
+    moveDown();
+  } else {
+    return;
+  }
 
   if (!boardsAreEqual(oldBoard, board)) {
     addTile();
+    updateBestScore();
     drawBoard();
+
+    checkWin();
+
+    if (checkGameOver()) {
+      alert("💀 Game Over !");
+    }
   }
 });
 
-addTile();
-addTile();
-drawBoard();
+restartButton.addEventListener("click", startGame);
+
+startGame();
