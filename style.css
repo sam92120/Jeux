@@ -5,12 +5,11 @@ body {
   background: #faf8ef;
   margin: 0;
   padding: 0;
-  overscroll-behavior: none;
-  touch-action: none;
-  overflow: hidden;
-  position: fixed;
   width: 100%;
   height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+  touch-action: none;
 }
 
 h1 {
@@ -78,13 +77,10 @@ button {
   #grid {
     width: 90vw;
     height: 90vw;
+    touch-action: none;
   }
 
   .cell {
     font-size: 8vw;
   }
-}
-
-#grid {
-  touch-action: none;
 }
