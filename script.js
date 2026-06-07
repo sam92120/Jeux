@@ -247,3 +247,4 @@ grid.addEventListener("touchend", e => {
 restartButton.addEventListener("click", startGame);
 
 startGame();
+console.log("SCRIPT CHARGE");
