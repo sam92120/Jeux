@@ -26,17 +26,24 @@ button {
   color: white;
   cursor: pointer;
 }
+button:hover {
+  background: #776e65;
+}
 
 #grid {
-  width: 400px;
-  height: 400px;
+  width: 90vw;
+  height: 90vw;
+  max-width: 400px;
+  max-height: 400px;
   margin: 25px auto;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, 1fr);
   gap: 10px;
   background: #bbada0;
   padding: 10px;
   border-radius: 10px;
+  box-sizing: border-box;
 }
 
 .cell {
@@ -48,9 +55,10 @@ button {
   align-items: center;
   justify-content: center;
   border-radius: 8px;
-}
-
-.cell {
+  transition:
+    background 0.2s,
+    color 0.2s;
+  font-size: clamp(24px, 8vw, 38px);
   min-width: 0;
   min-height: 0;
 }
