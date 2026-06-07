@@ -218,3 +218,47 @@ document.addEventListener("keydown", event => {
 restartButton.addEventListener("click", startGame);
 
 startGame();
+
+let startX = 0;
+let startY = 0;
+
+document.addEventListener("touchstart", (e) => {
+  startX = e.touches[0].clientX;
+  startY = e.touches[0].clientY;
+});
+
+document.addEventListener("touchend", (e) => {
+  let endX = e.changedTouches[0].clientX;
+  let endY = e.changedTouches[0].clientY;
+
+  let dx = endX - startX;
+  let dy = endY - startY;
+
+  const oldBoard = JSON.parse(JSON.stringify(board));
+
+  if (Math.abs(dx) > Math.abs(dy)) {
+    if (dx > 50) {
+      moveRight();
+    } else if (dx < -50) {
+      moveLeft();
+    }
+  } else {
+    if (dy > 50) {
+      moveDown();
+    } else if (dy < -50) {
+      moveUp();
+    }
+  }
+
+  if (!boardsAreEqual(oldBoard, board)) {
+    addTile();
+    updateBestScore();
+    drawBoard();
+
+    checkWin();
+
+    if (checkGameOver()) {
+      document.getElementById("game-over").style.display = "block";
+    }
+  }
+});
