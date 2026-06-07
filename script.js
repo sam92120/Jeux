@@ -222,43 +222,42 @@ startGame();
 let startX = 0;
 let startY = 0;
 
-document.addEventListener("touchstart", (e) => {
+grid.addEventListener("touchstart", (e) => {
+  e.preventDefault();
+
   startX = e.touches[0].clientX;
   startY = e.touches[0].clientY;
-});
+}, { passive: false });
 
-document.addEventListener("touchend", (e) => {
-  let endX = e.changedTouches[0].clientX;
-  let endY = e.changedTouches[0].clientY;
+grid.addEventListener("touchend", (e) => {
+  e.preventDefault();
 
-  let dx = endX - startX;
-  let dy = endY - startY;
+  const endX = e.changedTouches[0].clientX;
+  const endY = e.changedTouches[0].clientY;
+
+  const dx = endX - startX;
+  const dy = endY - startY;
+
+  if (Math.abs(dx) < 30 && Math.abs(dy) < 30) return;
 
   const oldBoard = JSON.parse(JSON.stringify(board));
 
   if (Math.abs(dx) > Math.abs(dy)) {
-    if (dx > 50) {
-      moveRight();
-    } else if (dx < -50) {
-      moveLeft();
-    }
+    if (dx > 30) moveRight();
+    else moveLeft();
   } else {
-    if (dy > 50) {
-      moveDown();
-    } else if (dy < -50) {
-      moveUp();
-    }
+    if (dy > 30) moveDown();
+    else moveUp();
   }
 
   if (!boardsAreEqual(oldBoard, board)) {
     addTile();
     updateBestScore();
     drawBoard();
-
     checkWin();
 
     if (checkGameOver()) {
       document.getElementById("game-over").style.display = "block";
     }
   }
-});
+}, { passive: false });

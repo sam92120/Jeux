@@ -74,3 +74,7 @@ button {
     font-size: 8vw;
   }
 }
+
+#grid {
+  touch-action: none;
+}
