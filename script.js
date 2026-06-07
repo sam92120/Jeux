@@ -210,7 +210,7 @@ document.addEventListener("keydown", event => {
     checkWin();
 
     if (checkGameOver()) {
-      alert("💀 Game Over !");
+      alert("💀 fini !");
     }
   }
 });
