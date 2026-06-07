@@ -1,7 +1,16 @@
+html,
 body {
   font-family: Arial, sans-serif;
   text-align: center;
   background: #faf8ef;
+  margin: 0;
+  padding: 0;
+  overscroll-behavior: none;
+  touch-action: none;
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+  height: 100%;
 }
 
 h1 {
