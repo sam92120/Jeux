@@ -1,7 +1,11 @@
+html,
 body {
   font-family: Arial, sans-serif;
   text-align: center;
   background: #faf8ef;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
 }
 
 h1 {
@@ -31,36 +35,28 @@ button:hover {
 }
 
 #grid {
-  width: 90vw;
-  height: 90vw;
-  max-width: 400px;
-  max-height: 400px;
-  margin: 25px auto;
+  width: min(90vw, 400px);
+  aspect-ratio: 1 / 1;
+  margin: 20px auto;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(4, 1fr);
-  gap: 10px;
+  gap: min(2vw, 10px);
   background: #bbada0;
-  padding: 10px;
+  padding: min(2vw, 10px);
   border-radius: 10px;
   box-sizing: border-box;
 }
 
 .cell {
-  background: #cdc1b4;
-  font-size: 38px;
+  min-width: 0;
+  min-height: 0;
+  font-size: clamp(20px, 7vw, 38px);
   font-weight: bold;
-  color: #776e65;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 8px;
-  transition:
-    background 0.2s,
-    color 0.2s;
-  font-size: clamp(24px, 8vw, 38px);
-  min-width: 0;
-  min-height: 0;
 }
 
 .cell-2 {
