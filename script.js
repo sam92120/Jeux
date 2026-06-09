@@ -247,4 +247,52 @@ grid.addEventListener("touchend", e => {
 restartButton.addEventListener("click", startGame);
 
 startGame();
-console.log("SCRIPT CHARGE");
+
+/********** Mode sombre **********/
+const themeToggle = document.getElementById("theme-toggle");
+
+themeToggle.addEventListener("click", () => {
+  document.body.classList.toggle("dark-theme");
+});
+
+//message de victoire ou défaite
+function showMessage(text) {
+  const messageDiv = document.getElementById("message");
+  messageDiv.textContent = text;
+  messageDiv.style.display = "block"; 
+  setTimeout(() => {
+    messageDiv.style.display = "none";
+  }, 3000);
+}
+
+function checkWin() {
+  if (hasWon) return; 
+
+  for (let row of board) {
+    if (row.includes(2048)) {
+      hasWon = true;
+      showMessage("🎉 Bravo ! Tu as gagné !");
+    } 
+  }
+}
+
+function checkGameOver() {
+  for (let row of board) {
+    if (row.includes(0)) return false; 
+  }
+
+  for (let r = 0; r < 4; r++) {
+    for (let c = 0; c < 3; c++) {
+      if (board[r][c] === board[r][c + 1]) return false; 
+    }
+  }
+
+  for (let c = 0; c < 4; c++) {
+    for (let r = 0; r < 3; r++) {
+      if (board[r][c] === board[r + 1][c]) return false; 
+    }
+  }
+
+  showMessage("💀 Game Over !");
+  return true;
+} 

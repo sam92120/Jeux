@@ -103,3 +103,91 @@ button:hover {
   background: #edc22e;
   color: #f9f6f2;
 }
+
+/* ===================== */
+/* MODE SOMBRE */
+/* ===================== */
+
+body.dark-theme {
+  background: #121212;
+  color: white;
+}
+
+body.dark-theme h1 {
+  color: #ffffff;
+}
+
+body.dark-theme #infos {
+  color: white;
+}
+
+body.dark-theme #grid {
+  background: #2d2d2d;
+}
+
+body.dark-theme button {
+  background: #444;
+  color: white;
+}
+
+body.dark-theme button:hover {
+  background: #666;
+}
+
+body.dark-theme .cell {
+  border: 1px solid #333;
+}
+
+body.dark-theme .cell-2 {
+  background: #eee4da;
+  color: #776e65;
+}
+body.dark-theme .cell-4 {
+  background: #ede0c8;
+  color: #776e65;
+}
+body.dark-theme .cell-8 {
+  background: #f2b179;
+  color: #f9f6f2;
+}
+body.dark-theme .cell-16 {
+  background: #f59563;
+  color: #f9f6f2;
+}
+body.dark-theme .cell-32 {
+  background: #f67c5f;
+  color: #f9f6f2;
+}
+body.dark-theme .cell-64 {
+  background: #f65e3b;
+  color: #f9f6f2;
+}
+body.dark-theme .cell-128 {
+  background: #edcf72;
+  color: #f9f6f2;
+}
+body.dark-theme .cell-256 {
+  background: #edcc61;
+  color: #f9f6f2;
+}
+body.dark-theme .cell-512 {
+  background: #edc850;
+  color: #f9f6f2;
+}
+body.dark-theme .cell-1024 {
+  background: #edc53f;
+  color: #f9f6f2;
+}
+body.dark-theme .cell-2048 {
+  background: #edc22e;
+  color: #f9f6f2;
+}
+
+#message {
+  font-size: 24px;
+  margin-top: 20px;
+  color: #776e65;
+}
+body.dark-theme #message {
+  color: white;
+}
