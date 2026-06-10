@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Snake</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="page">
+    <h1>Snake</h1>
+
+    <div id="infos">
+      <div id="score">Score : 0</div>
+      <div id="best">Meilleur : 0</div>
+    </div>
+
+    <canvas id="gameCanvas" width="400" height="400"></canvas>
+
+    <div id="message"></div>
+
+    <button id="restart">Nouvelle partie</button>
+    <button id="theme-toggle">🌙 Mode sombre</button>
+  </div>
+
+  <!--vitesse -->
+    <div id="speed-control">
+     <label for="speed">Vitesse :</label>
+     <input type="range" id="speed" min="1" max="10" value="5">
+    </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

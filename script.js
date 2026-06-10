@@ -2,6 +2,7 @@ const grid = document.getElementById("grid");
 const scoreDisplay = document.getElementById("score");
 const bestDisplay = document.getElementById("best");
 const restartButton = document.getElementById("restart");
+const messageDisplay = document.getElementById("message");
 
 let board;
 let score = 0;
@@ -145,7 +146,7 @@ function checkWin() {
   for (let row of board) {
     if (row.includes(2048)) {
       hasWon = true;
-      alert("🎉 Bravo ! Tu as gagné !");
+      showMessage("🎉 Bravo ! Tu as gagné !");
     }
   }
 }
@@ -178,7 +179,7 @@ function afterMove(oldBoard) {
     checkWin();
 
     if (checkGameOver()) {
-      alert("💀 Game Over !");
+      showMessage("💀 partie terminée !");
     }
   }
 }
@@ -293,6 +294,7 @@ function checkGameOver() {
     }
   }
 
-  showMessage("💀 Game Over !");
+  showMessage("💀 partie terminée !");
   return true;
 } 
+
