@@ -178,7 +178,8 @@ function afterMove(oldBoard) {
     checkWin();
 
     if (checkGameOver()) {
-      showMessage("💀 partie terminée !");
+      showMessage("tu as perdu !, recommence une partie pour essayer de gagner !");
+      restartButton.style.display = "block";
     }
   }
 }
