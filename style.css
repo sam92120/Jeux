@@ -6,6 +6,7 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
+  overflow-y: auto;
 }
 
 h1 {
@@ -32,6 +33,7 @@ button {
 }
 button:hover {
   background: #776e65;
+  
 }
 
 #grid {
@@ -46,6 +48,8 @@ button:hover {
   padding: min(2vw, 10px);
   border-radius: 10px;
   box-sizing: border-box;
+  min-height: 0;
+  min-width: 0;
 }
 
 .cell {

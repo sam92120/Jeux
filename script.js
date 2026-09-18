@@ -3,7 +3,6 @@ const scoreDisplay = document.getElementById("score");
 const bestDisplay = document.getElementById("best");
 const restartButton = document.getElementById("restart");
 const messageDisplay = document.getElementById("message");
-
 let board;
 let score = 0;
 let bestScore = Number(localStorage.getItem("bestScore")) || 0;
@@ -19,7 +18,7 @@ function startGame() {
 
   score = 0;
   hasWon = false;
-
+  
   addTile();
   addTile();
   drawBoard();
@@ -294,7 +293,7 @@ function checkGameOver() {
     }
   }
 
-  showMessage("💀 partie terminée !");
+  showMessage("tu as perdu !, recommence une partie pour essayer de gagner !");
   return true;
 } 
 
