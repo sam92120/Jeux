@@ -304,7 +304,7 @@ function afterMove(oldBoard) {
       endGame();
 
       showMessage(
-        "Tu as perdu ! Recommence une partie pour essayer de gagner !"
+        "Allez ! vous pouvez faire mieux que ça 👏👏👏!"
       );
     }
   }
