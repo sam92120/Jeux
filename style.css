@@ -379,3 +379,9 @@ body.dark-theme #playerName::placeholder {
     right: 15px;
   }
 }
+
+
+.center {
+  display: block;
+  margin: 0 auto;
+}
