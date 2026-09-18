@@ -4,25 +4,42 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title style="font-size: 24px; color: #776e65;" >2048</title>
+  <title>2048</title>
   <link rel="stylesheet" href="style.css">
-
-
 </head>
 
 <body>
-  <h2 style="font-size: 24px; color: #0e11b5;" >Un jeu de logique</h2>
-  <h1 style="font-size: 48px; color: #776e65;" >2048</h1>
-  <div id="infos">
-    <div id="score">Score : 0</div>
-    <div id="best">Meilleur : 0</div>
+
+  <label class="switch">
+    <input type="checkbox" id="theme-toggle">
+    <span class="slider"></span>
+  </label>
+
+  <div id="accueil">
+
+    <h1>2048</h1>
+
+    <h2>Un jeu de logique</h2>
+
+    <input
+      type="text"
+      id="playerName"
+      placeholder="Entre ton nom"
+    >
+
+    <button id="startButton">
+      Go
+    </button>
+
+    <div id="ranking">
+      <h2>Top 10</h2>
+      <ol id="rankingList"></ol>
+    </div>
+
   </div>
 
-  <button id="restart">Nouvelle partie</button>
-  <button id="theme-toggle">🌙 Mode sombre</button>
-  <div id="message"></div>
-  <div id="grid"></div>
-  <script src="script.js"></script>
+  <script src="accueil.js"></script>
+
 </body>
 
 </html>

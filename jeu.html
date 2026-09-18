@@ -1,0 +1,43 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2048</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <label class="switch">
+    <input type="checkbox" id="theme-toggle">
+    <span class="slider"></span>
+  </label>
+
+  <h2>Un jeu de logique</h2>
+  <h1>2048</h1>
+
+  <div id="player"></div>
+
+  <div id="infos">
+    <div id="score">Score : 0</div>
+    <div id="best">Meilleur : 0</div>
+  </div>
+
+  <button id="restart">Nouvelle partie</button>
+
+  <div id="message"></div>
+
+  <div id="grid"></div>
+
+  <div id="ranking">
+    <h2>Top 10</h2>
+    <ol id="rankingList"></ol>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>

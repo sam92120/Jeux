@@ -1,3 +1,4 @@
+
 html,
 body {
   font-family: Arial, sans-serif;
@@ -11,6 +12,10 @@ body {
 
 h1 {
   font-size: 60px;
+  color: #776e65;
+}
+
+h2 {
   color: #776e65;
 }
 
@@ -31,9 +36,9 @@ button {
   color: white;
   cursor: pointer;
 }
+
 button:hover {
   background: #776e65;
-  
 }
 
 #grid {
@@ -61,64 +66,76 @@ button:hover {
   align-items: center;
   justify-content: center;
   border-radius: 8px;
+
+  /* Cases vides */
+  background: #cdc1b4;
 }
 
 .cell-2 {
   background: #eee4da;
   color: #776e65;
 }
+
 .cell-4 {
   background: #ede0c8;
   color: #776e65;
 }
+
 .cell-8 {
   background: #f2b179;
   color: #f9f6f2;
 }
+
 .cell-16 {
   background: #f59563;
   color: #f9f6f2;
 }
+
 .cell-32 {
   background: #f67c5f;
   color: #f9f6f2;
 }
+
 .cell-64 {
   background: #f65e3b;
   color: #f9f6f2;
 }
+
 .cell-128 {
   background: #edcf72;
   color: #f9f6f2;
 }
+
 .cell-256 {
   background: #edcc61;
   color: #f9f6f2;
 }
+
 .cell-512 {
   background: #edc850;
   color: #f9f6f2;
 }
+
 .cell-1024 {
   background: #edc53f;
   color: #f9f6f2;
 }
+
 .cell-2048 {
   background: #edc22e;
   color: #f9f6f2;
 }
 
-/* ===================== */
 /* MODE SOMBRE */
-/* ===================== */
 
 body.dark-theme {
   background: #121212;
   color: white;
 }
 
-body.dark-theme h1 {
-  color: #ffffff;
+body.dark-theme h1,
+body.dark-theme h2 {
+  color: white;
 }
 
 body.dark-theme #infos {
@@ -139,6 +156,7 @@ body.dark-theme button:hover {
 }
 
 body.dark-theme .cell {
+  background: #3a3a3a;
   border: 1px solid #333;
 }
 
@@ -146,42 +164,52 @@ body.dark-theme .cell-2 {
   background: #eee4da;
   color: #776e65;
 }
+
 body.dark-theme .cell-4 {
   background: #ede0c8;
   color: #776e65;
 }
+
 body.dark-theme .cell-8 {
   background: #f2b179;
   color: #f9f6f2;
 }
+
 body.dark-theme .cell-16 {
   background: #f59563;
   color: #f9f6f2;
 }
+
 body.dark-theme .cell-32 {
   background: #f67c5f;
   color: #f9f6f2;
 }
+
 body.dark-theme .cell-64 {
   background: #f65e3b;
   color: #f9f6f2;
 }
+
 body.dark-theme .cell-128 {
   background: #edcf72;
   color: #f9f6f2;
 }
+
 body.dark-theme .cell-256 {
   background: #edcc61;
   color: #f9f6f2;
 }
+
 body.dark-theme .cell-512 {
   background: #edc850;
   color: #f9f6f2;
 }
+
 body.dark-theme .cell-1024 {
   background: #edc53f;
   color: #f9f6f2;
 }
+
 body.dark-theme .cell-2048 {
   background: #edc22e;
   color: #f9f6f2;
@@ -192,6 +220,162 @@ body.dark-theme .cell-2048 {
   margin-top: 20px;
   color: #776e65;
 }
+
 body.dark-theme #message {
   color: white;
+}
+
+/* SWITCH */
+
+.switch {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 55px;
+  height: 30px;
+  z-index: 9999;
+}
+
+.switch input {
+  display: none;
+}
+
+.slider {
+  position: absolute;
+  inset: 0;
+  background: #ccc;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.slider::before {
+  content: "☀️";
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  left: 3px;
+  top: 3px;
+  background: white;
+  border-radius: 50%;
+  font-size: 14px;
+  line-height: 24px;
+  transition: 0.3s;
+}
+
+.switch input:checked + .slider {
+  background: #444;
+}
+
+.switch input:checked + .slider::before {
+  content: "🌙";
+  transform: translateX(25px);
+}
+
+/* ACCUEIL */
+
+#accueil {
+  max-width: 500px;
+  margin: 50px auto;
+}
+
+#accueil h1 {
+  font-size: 70px;
+}
+
+#playerName {
+  display: block;
+  width: 80%;
+  max-width: 300px;
+  margin: 20px auto;
+  padding: 12px;
+  font-size: 18px;
+  border: 2px solid #776e65;
+  border-radius: 8px;
+  box-sizing: border-box;
+  text-align: center;
+  background: white;
+  color: #776e65;
+}
+
+#player {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 10px;
+}
+
+#ranking {
+  width: 350px;
+  max-width: 90%;
+  margin: 30px auto;
+  padding: 15px;
+  background: #eee4da;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+
+#ranking h2 {
+  color: #776e65;
+}
+
+#rankingList {
+  text-align: left;
+  padding-left: 35px;
+}
+
+#rankingList li {
+  padding: 6px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+body.dark-theme #ranking {
+  background: #333;
+  color: white;
+}
+
+body.dark-theme #ranking h2 {
+  color: white;
+}
+
+body.dark-theme #playerName {
+  background: #333;
+  color: white;
+  border-color: #777;
+}
+
+body.dark-theme #playerName::placeholder {
+  color: #bbb;
+}
+
+@media (max-width: 500px) {
+  body {
+    padding: 15px;
+  }
+
+  h1 {
+    font-size: 48px;
+  }
+
+  #grid {
+    width: 90vw;
+  }
+
+  .cell {
+    font-size: clamp(18px, 7vw, 30px);
+  }
+
+  #infos {
+    gap: 8px;
+    font-size: 18px;
+  }
+
+  #ranking {
+    width: 90%;
+  }
+
+  .switch {
+    top: 15px;
+    right: 15px;
+  }
 }
