@@ -455,4 +455,35 @@ function showMessage(text) {
   }, 3000);
 }
 
+//si le joueur n'a pas encore choisi son nom, on lui demande
+if (!localStorage.getItem("2048_playerName")) {
+  playerName = prompt(
+    "Bienvenue dans le jeu 2048 !\n\nVeuillez entrer votre nom :",
+    "Joueur"
+  );
+
+  if (playerName) {
+    localStorage.setItem(
+      "2048_playerName",
+      playerName
+    );
+  } else {
+    playerName = "Joueur";
+  }
+}
+
+//si le jouer a battu son meilleur score , alors on applaudit le joueur
+if (score > bestScore) {
+  showMessage(
+    "Félicitations ! Vous avez battu votre meilleur score ! 🎉"
+  );
+}
+//le jouer a fait pire que son meilleur score, on lui dit wow t'es nul en nommant par son nom
+if (score < bestScore) {
+  showMessage(
+    `Dommage ${playerName}, etes-vous un peu nul ? 😢`
+  );
+}
 startGame();
+
+
