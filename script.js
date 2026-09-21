@@ -1,22 +1,108 @@
-
 const grid = document.getElementById("grid");
 const scoreDisplay = document.getElementById("score");
 const bestDisplay = document.getElementById("best");
 const restartButton = document.getElementById("restart");
 const messageDisplay = document.getElementById("message");
+const themeToggle = document.getElementById("theme-toggle");
+const ranking = document.getElementById("ranking");
+const rankingList = document.getElementById("rankingList");
+const playerDisplay = document.getElementById("player");
 
 let board;
 let score = 0;
 let hasWon = false;
 let gameEnded = false;
 
-let playerName = localStorage.getItem("2048_playerName") || "Joueur";
 
-let bestScore = Number(
-  localStorage.getItem(`bestScore_${playerName.toLowerCase()}`)
-) || 0;
+// ==========================================
+// JOUEUR
+// ==========================================
+
+let playerName = localStorage.getItem("2048_playerName");
+
+if (!playerName) {
+  playerName = prompt(
+    "Bienvenue dans le jeu 2048 !\n\nVeuillez entrer votre nom :",
+    "Joueur"
+  );
+
+  if (!playerName || playerName.trim() === "") {
+    playerName = "Joueur";
+  }
+
+  playerName = playerName.trim();
+
+  localStorage.setItem(
+    "2048_playerName",
+    playerName
+  );
+}
+
+
+// ==========================================
+// MEILLEUR SCORE
+// ==========================================
+
+const bestScoreKey =
+  `bestScore_${playerName.toLowerCase()}`;
+
+let bestScore =
+  Number(localStorage.getItem(bestScoreKey)) || 0;
+
+
+// ==========================================
+// THÈME SOMBRE
+// ==========================================
+
+if (localStorage.getItem("2048_theme") === "dark") {
+  document.body.classList.add("dark-theme");
+  themeToggle.checked = true;
+}
+
+themeToggle.addEventListener("change", () => {
+
+  if (themeToggle.checked) {
+
+    document.body.classList.add("dark-theme");
+
+    localStorage.setItem(
+      "2048_theme",
+      "dark"
+    );
+
+  } else {
+
+    document.body.classList.remove("dark-theme");
+
+    localStorage.setItem(
+      "2048_theme",
+      "light"
+    );
+  }
+});
+
+
+// ==========================================
+// MESSAGE
+// ==========================================
+
+function showMessage(text) {
+
+  messageDisplay.textContent = text;
+  messageDisplay.style.display = "block";
+
+  setTimeout(() => {
+    messageDisplay.style.display = "none";
+  }, 3000);
+}
+
+
+// ==========================================
+// DÉMARRER UNE PARTIE
+// ==========================================
 
 function startGame() {
+
   board = [
     [0, 0, 0, 0],
     [0, 0, 0, 0],
@@ -28,19 +114,27 @@ function startGame() {
   hasWon = false;
   gameEnded = false;
 
-  document.getElementById("ranking").style.display = "none";
+  ranking.style.display = "none";
   restartButton.style.display = "none";
   messageDisplay.style.display = "none";
 
   addTile();
   addTile();
+
   drawBoard();
 }
 
+
+// ==========================================
+// AFFICHER LE PLATEAU
+// ==========================================
+
 function drawBoard() {
+
   grid.innerHTML = "";
 
   board.flat().forEach(value => {
+
     const cell = document.createElement("div");
 
     cell.className = "cell";
@@ -49,53 +143,90 @@ function drawBoard() {
       cell.classList.add(`cell-${value}`);
     }
 
-    cell.textContent = value === 0 ? "" : value;
+    cell.textContent =
+      value === 0 ? "" : value;
 
     grid.appendChild(cell);
   });
 
-  scoreDisplay.textContent = `Score : ${score}`;
-  bestDisplay.textContent = `Meilleur : ${bestScore}`;
+  scoreDisplay.textContent =
+    `Score : ${score}`;
 
-  const playerDisplay = document.getElementById("player");
+  bestDisplay.textContent =
+    `Meilleur : ${bestScore}`;
 
-  if (playerDisplay) {
-    playerDisplay.textContent = `Joueur : ${playerName}`;
-  }
+  playerDisplay.textContent =
+    `Joueur : ${playerName}`;
 }
 
+
+// ==========================================
+// AJOUTER UNE CASE
+// ==========================================
+
 function addTile() {
+
   const emptyCells = [];
 
   for (let r = 0; r < 4; r++) {
+
     for (let c = 0; c < 4; c++) {
+
       if (board[r][c] === 0) {
-        emptyCells.push({ r, c });
+
+        emptyCells.push({
+          r,
+          c
+        });
       }
     }
   }
 
-  if (emptyCells.length === 0) return;
+  if (emptyCells.length === 0) {
+    return;
+  }
 
   const randomCell =
-    emptyCells[Math.floor(Math.random() * emptyCells.length)];
+    emptyCells[
+      Math.floor(
+        Math.random() * emptyCells.length
+      )
+    ];
 
   board[randomCell.r][randomCell.c] =
     Math.random() < 0.9 ? 2 : 4;
 }
 
-function slide(row) {
-  row = row.filter(value => value !== 0);
 
-  for (let i = 0; i < row.length - 1; i++) {
+// ==========================================
+// FUSIONNER UNE LIGNE
+// ==========================================
+
+function slide(row) {
+
+  row = row.filter(
+    value => value !== 0
+  );
+
+  for (
+    let i = 0;
+    i < row.length - 1;
+    i++
+  ) {
+
     if (row[i] === row[i + 1]) {
+
       row[i] *= 2;
+
       score += row[i];
+
       row[i + 1] = 0;
     }
   }
 
-  row = row.filter(value => value !== 0);
+  row = row.filter(
+    value => value !== 0
+  );
 
   while (row.length < 4) {
     row.push(0);
@@ -104,20 +235,35 @@ function slide(row) {
   return row;
 }
 
+
+// ==========================================
+// DÉPLACEMENTS
+// ==========================================
+
 function moveLeft() {
+
   for (let r = 0; r < 4; r++) {
     board[r] = slide(board[r]);
   }
 }
 
+
 function moveRight() {
+
   for (let r = 0; r < 4; r++) {
-    board[r] = slide([...board[r]].reverse()).reverse();
+
+    board[r] =
+      slide(
+        [...board[r]].reverse()
+      ).reverse();
   }
 }
 
+
 function moveUp() {
+
   for (let c = 0; c < 4; c++) {
+
     let column = [
       board[0][c],
       board[1][c],
@@ -133,8 +279,11 @@ function moveUp() {
   }
 }
 
+
 function moveDown() {
+
   for (let c = 0; c < 4; c++) {
+
     let column = [
       board[0][c],
       board[1][c],
@@ -142,7 +291,10 @@ function moveDown() {
       board[3][c]
     ];
 
-    column = slide(column.reverse()).reverse();
+    column =
+      slide(
+        column.reverse()
+      ).reverse();
 
     for (let r = 0; r < 4; r++) {
       board[r][c] = column[r];
@@ -150,71 +302,114 @@ function moveDown() {
   }
 }
 
+
+// ==========================================
+// COMPARER DEUX PLATEAUX
+// ==========================================
+
 function boardsAreEqual(a, b) {
-  return JSON.stringify(a) === JSON.stringify(b);
+
+  return JSON.stringify(a) ===
+         JSON.stringify(b);
 }
 
+
+// ==========================================
+// MEILLEUR SCORE
+// ==========================================
+
 function updateBestScore() {
+
   if (score > bestScore) {
+
+    const oldBest = bestScore;
+
     bestScore = score;
 
     localStorage.setItem(
-      `bestScore_${playerName.toLowerCase()}`,
+      bestScoreKey,
       bestScore
     );
+
+    if (oldBest > 0) {
+      showMessage(
+        "🎉 Félicitations ! " +
+        "Vous avez battu votre meilleur score !"
+      );
+    }
   }
 }
 
-function saveScore() {
-  let ranking =
-    JSON.parse(localStorage.getItem("2048_ranking")) || [];
 
-  const existingPlayer = ranking.find(
-    player =>
-      player.name.toLowerCase() === playerName.toLowerCase()
-  );
+// ==========================================
+// CLASSEMENT
+// ==========================================
+
+function saveScore() {
+
+  let rankingData =
+    JSON.parse(
+      localStorage.getItem("2048_ranking")
+    ) || [];
+
+  const existingPlayer =
+    rankingData.find(
+      player =>
+        player.name.toLowerCase() ===
+        playerName.toLowerCase()
+    );
 
   if (existingPlayer) {
+
     if (score > existingPlayer.score) {
       existingPlayer.score = score;
     }
+
   } else {
-    ranking.push({
+
+    rankingData.push({
       name: playerName,
       score: score
     });
   }
 
-  ranking.sort((a, b) => b.score - a.score);
-  ranking = ranking.slice(0, 10);
+  rankingData.sort(
+    (a, b) => b.score - a.score
+  );
+
+  rankingData =
+    rankingData.slice(0, 10);
 
   localStorage.setItem(
     "2048_ranking",
-    JSON.stringify(ranking)
+    JSON.stringify(rankingData)
   );
 
   displayRanking();
 }
 
+
 function displayRanking() {
-  const rankingList =
-    document.getElementById("rankingList");
-
-  if (!rankingList) return;
-
-  const ranking =
-    JSON.parse(localStorage.getItem("2048_ranking")) || [];
 
   rankingList.innerHTML = "";
 
-  if (ranking.length === 0) {
+  const rankingData =
+    JSON.parse(
+      localStorage.getItem("2048_ranking")
+    ) || [];
+
+  if (rankingData.length === 0) {
+
     rankingList.innerHTML =
       "<li>Aucun score pour le moment</li>";
+
     return;
   }
 
-  ranking.forEach(player => {
-    const li = document.createElement("li");
+  rankingData.forEach(player => {
+
+    const li =
+      document.createElement("li");
 
     li.textContent =
       `${player.name} - ${player.score}`;
@@ -223,63 +418,113 @@ function displayRanking() {
   });
 }
 
-function showRanking() {
-  const ranking =
-    document.getElementById("ranking");
 
-  if (ranking) {
-    ranking.style.display = "block";
-  }
+function showRanking() {
+
+  ranking.style.display = "block";
 
   displayRanking();
 }
 
+
+// ==========================================
+// FIN DE PARTIE
+// ==========================================
+
 function endGame() {
-  if (gameEnded) return;
+
+  if (gameEnded) {
+    return;
+  }
 
   gameEnded = true;
 
   updateBestScore();
+
   saveScore();
+
   showRanking();
 
   restartButton.style.display = "block";
+
+  showMessage(
+    "Allez ! Vous pouvez faire mieux que ça 👏👏👏 !"
+  );
 }
 
-function checkWin() {
-  if (hasWon) return;
 
-  for (let row of board) {
+// ==========================================
+// VICTOIRE
+// ==========================================
+
+function checkWin() {
+
+  if (hasWon) {
+    return;
+  }
+
+  for (const row of board) {
+
     if (row.includes(2048)) {
+
       hasWon = true;
 
       updateBestScore();
+
       saveScore();
+
       showRanking();
 
-      showMessage("🎉 Bravo ! Tu as gagné !");
+      showMessage(
+        "🎉 Bravo ! Tu as gagné !"
+      );
 
-      restartButton.style.display = "block";
+      restartButton.style.display =
+        "block";
+
+      return;
     }
   }
 }
 
+
+// ==========================================
+// GAME OVER
+// ==========================================
+
 function checkGameOver() {
-  for (let row of board) {
-    if (row.includes(0)) return false;
+
+  // Cases vides
+  for (const row of board) {
+
+    if (row.includes(0)) {
+      return false;
+    }
   }
 
+  // Vérification horizontale
   for (let r = 0; r < 4; r++) {
+
     for (let c = 0; c < 3; c++) {
-      if (board[r][c] === board[r][c + 1]) {
+
+      if (
+        board[r][c] ===
+        board[r][c + 1]
+      ) {
         return false;
       }
     }
   }
 
+  // Vérification verticale
   for (let c = 0; c < 4; c++) {
+
     for (let r = 0; r < 3; r++) {
-      if (board[r][c] === board[r + 1][c]) {
+
+      if (
+        board[r][c] ===
+        board[r + 1][c]
+      ) {
         return false;
       }
     }
@@ -288,10 +533,19 @@ function checkGameOver() {
   return true;
 }
 
+
+// ==========================================
+// APRÈS UN DÉPLACEMENT
+// ==========================================
+
 function afterMove(oldBoard) {
-  if (gameEnded || hasWon) return;
+
+  if (gameEnded || hasWon) {
+    return;
+  }
 
   if (!boardsAreEqual(oldBoard, board)) {
+
     addTile();
 
     updateBestScore();
@@ -300,190 +554,232 @@ function afterMove(oldBoard) {
 
     checkWin();
 
-    if (!hasWon && checkGameOver()) {
+    if (
+      !hasWon &&
+      checkGameOver()
+    ) {
       endGame();
-
-      showMessage(
-        "Allez ! vous pouvez faire mieux que ça 👏👏👏!"
-      );
     }
   }
 }
 
-/* Clavier PC */
-document.addEventListener("keydown", event => {
-  if (gameEnded || hasWon) return;
 
-  const key = event.key.toLowerCase();
+// ==========================================
+// CLAVIER
+// ==========================================
 
-  if (
-    event.key !== "ArrowLeft" &&
-    event.key !== "ArrowRight" &&
-    event.key !== "ArrowUp" &&
-    event.key !== "ArrowDown" &&
-    key !== "q" &&
-    key !== "d" &&
-    key !== "z" &&
-    key !== "s"
-  ) {
-    return;
+document.addEventListener(
+  "keydown",
+  event => {
+
+    if (gameEnded || hasWon) {
+      return;
+    }
+
+    const key =
+      event.key.toLowerCase();
+
+    if (
+      event.key !== "ArrowLeft" &&
+      event.key !== "ArrowRight" &&
+      event.key !== "ArrowUp" &&
+      event.key !== "ArrowDown" &&
+      key !== "q" &&
+      key !== "d" &&
+      key !== "z" &&
+      key !== "s"
+    ) {
+      return;
+    }
+
+    event.preventDefault();
+
+    const oldBoard =
+      JSON.parse(
+        JSON.stringify(board)
+      );
+
+    if (
+      event.key === "ArrowLeft" ||
+      key === "q"
+    ) {
+      moveLeft();
+    }
+
+    if (
+      event.key === "ArrowRight" ||
+      key === "d"
+    ) {
+      moveRight();
+    }
+
+    if (
+      event.key === "ArrowUp" ||
+      key === "z"
+    ) {
+      moveUp();
+    }
+
+    if (
+      event.key === "ArrowDown" ||
+      key === "s"
+    ) {
+      moveDown();
+    }
+
+    afterMove(oldBoard);
   }
+);
 
-  event.preventDefault();
 
-  const oldBoard =
-    JSON.parse(JSON.stringify(board));
+// ==========================================
+// TACTILE
+// ==========================================
 
-  if (event.key === "ArrowLeft" || key === "q") {
-    moveLeft();
-  }
-
-  if (event.key === "ArrowRight" || key === "d") {
-    moveRight();
-  }
-
-  if (event.key === "ArrowUp" || key === "z") {
-    moveUp();
-  }
-
-  if (event.key === "ArrowDown" || key === "s") {
-    moveDown();
-  }
-
-  afterMove(oldBoard);
-});
-
-/* Tactile téléphone */
 let startX = 0;
 let startY = 0;
 
-grid.addEventListener("touchstart", e => {
-  e.preventDefault();
 
-  startX = e.touches[0].clientX;
-  startY = e.touches[0].clientY;
-}, { passive: false });
+grid.addEventListener(
+  "touchstart",
+  event => {
 
-grid.addEventListener("touchmove", e => {
-  e.preventDefault();
-}, { passive: false });
+    event.preventDefault();
 
-grid.addEventListener("touchend", e => {
-  e.preventDefault();
+    startX =
+      event.touches[0].clientX;
 
-  if (gameEnded || hasWon) return;
+    startY =
+      event.touches[0].clientY;
 
-  const endX = e.changedTouches[0].clientX;
-  const endY = e.changedTouches[0].clientY;
+  },
+  { passive: false }
+);
 
-  const dx = endX - startX;
-  const dy = endY - startY;
 
-  if (
-    Math.abs(dx) < 30 &&
-    Math.abs(dy) < 30
-  ) {
+grid.addEventListener(
+  "touchmove",
+  event => {
+
+    event.preventDefault();
+
+  },
+  { passive: false }
+);
+
+
+grid.addEventListener(
+  "touchend",
+  event => {
+
+    event.preventDefault();
+
+    if (gameEnded || hasWon) {
+      return;
+    }
+
+    const endX =
+      event.changedTouches[0].clientX;
+
+    const endY =
+      event.changedTouches[0].clientY;
+
+    const dx = endX - startX;
+    const dy = endY - startY;
+
+    if (
+      Math.abs(dx) < 30 &&
+      Math.abs(dy) < 30
+    ) {
+      return;
+    }
+
+    const oldBoard =
+      JSON.parse(
+        JSON.stringify(board)
+      );
+
+    if (
+      Math.abs(dx) > Math.abs(dy)
+    ) {
+
+      if (dx > 0) {
+        moveRight();
+      } else {
+        moveLeft();
+      }
+
+    } else {
+
+      if (dy > 0) {
+        moveDown();
+      } else {
+        moveUp();
+      }
+    }
+
+    afterMove(oldBoard);
+
+  },
+  { passive: false }
+);
+
+// Si une case est égale à 2048,
+// le joueur gagne, le jeu s'arrête,
+// le message de victoire s'affiche
+// et le score est sauvegardé.
+
+function checkWin() {
+
+  if (hasWon) {
     return;
   }
 
-  const oldBoard =
-    JSON.parse(JSON.stringify(board));
+  for (let i = 0; i < board.length; i++) {
 
-  if (Math.abs(dx) > Math.abs(dy)) {
-    if (dx > 0) {
-      moveRight();
-    } else {
-      moveLeft();
-    }
-  } else {
-    if (dy > 0) {
-      moveDown();
-    } else {
-      moveUp();
+    for (let j = 0; j < board[i].length; j++) {
+
+      if (board[i][j] === 2048) {
+
+        hasWon = true;
+        gameEnded = true;
+
+        // Sauvegarder le meilleur score
+        updateBestScore();
+
+        // Sauvegarder le score dans le classement
+        saveScore();
+
+        // Afficher le classement
+        showRanking();
+
+        // Afficher le message de victoire
+        showMessage("🎉 Bravo ! Tu as gagné !");
+
+        // Afficher le bouton nouvelle partie
+        restartButton.style.display = "block";
+
+        return;
+      }
     }
   }
+}
 
-  afterMove(oldBoard);
-}, { passive: false });
+
+
+
+// ==========================================
+// NOUVELLE PARTIE
+// ==========================================
 
 restartButton.addEventListener(
   "click",
   startGame
 );
 
-/********** Mode sombre **********/
 
-const themeToggle =
-  document.getElementById("theme-toggle");
+// ==========================================
+// LANCEMENT
+// ==========================================
 
-if (
-  localStorage.getItem("2048_theme") === "dark"
-) {
-  document.body.classList.add("dark-theme");
-  themeToggle.checked = true;
-}
-
-themeToggle.addEventListener("change", () => {
-  if (themeToggle.checked) {
-    document.body.classList.add("dark-theme");
-
-    localStorage.setItem(
-      "2048_theme",
-      "dark"
-    );
-  } else {
-    document.body.classList.remove("dark-theme");
-
-    localStorage.setItem(
-      "2048_theme",
-      "light"
-    );
-  }
-});
-
-//message de victoire ou défaite
-function showMessage(text) {
-  const messageDiv =
-    document.getElementById("message");
-
-  messageDiv.textContent = text;
-
-  messageDiv.style.display = "block";
-
-  setTimeout(() => {
-    messageDiv.style.display = "none";
-  }, 3000);
-}
-
-//si le joueur n'a pas encore choisi son nom, on lui demande
-if (!localStorage.getItem("2048_playerName")) {
-  playerName = prompt(
-    "Bienvenue dans le jeu 2048 !\n\nVeuillez entrer votre nom :",
-    "Joueur"
-  );
-
-  if (playerName) {
-    localStorage.setItem(
-      "2048_playerName",
-      playerName
-    );
-  } else {
-    playerName = "Joueur";
-  }
-}
-
-//si le jouer a battu son meilleur score , alors on applaudit le joueur
-if (score > bestScore) {
-  showMessage(
-    "Félicitations ! Vous avez battu votre meilleur score ! 🎉"
-  );
-}
-//le jouer a fait pire que son meilleur score, on lui dit wow t'es nul en nommant par son nom
-if (score < bestScore) {
-  showMessage(
-    `Dommage ${playerName}, etes-vous un peu nul ? 😢`
-  );
-}
 startGame();
-
-
